@@ -1,0 +1,267 @@
+:root {
+  color-scheme: light dark;
+  --background: #fafaf9;
+  --surface: #ffffff;
+  --text: #1c1917;
+  --muted: #57534e;
+  --border: #a8a29e;
+  --accent: #c2410c;
+  --error: #b91c1c;
+  --target: 2.75rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1c1917;
+    --surface: #292524;
+    --text: #fafaf9;
+    --muted: #a8a29e;
+    --border: #78716c;
+    --accent: #fb923c;
+    --error: #fca5a5;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0 auto;
+  max-width: 34rem;
+  padding:
+    max(1.5rem, env(safe-area-inset-top))
+    max(1rem, env(safe-area-inset-right))
+    max(1.5rem, env(safe-area-inset-bottom))
+    max(1rem, env(safe-area-inset-left));
+  background: var(--background);
+  color: var(--text);
+  font: 1rem/1.5 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1 {
+  margin: 0 0 1.25rem;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+a {
+  color: var(--accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.field {
+  margin-bottom: 0.75rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.control {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface);
+}
+
+.control:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.control:has([aria-invalid='true']) {
+  border-color: var(--error);
+  box-shadow: 0 0 0 1px var(--error);
+}
+
+input[type='text'],
+textarea {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--target);
+  padding: 0.5625rem 0.75rem;
+  border: 0;
+  border-radius: 0.5rem;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  /* Below 16px, iOS zooms the page when a field gets focus. */
+  font: inherit;
+  font-size: max(1rem, 16px);
+}
+
+textarea {
+  display: block;
+  resize: none;
+  field-sizing: content;
+}
+
+::placeholder {
+  color: var(--muted);
+  opacity: 0.8;
+}
+
+input[type='text'].mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+button {
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+svg {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+svg[hidden] {
+  display: none;
+}
+
+.copy {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--target);
+  min-height: var(--target);
+  border-radius: 0.5rem;
+  color: var(--muted);
+  transition: color 120ms, opacity 120ms;
+}
+
+.copy:hover:enabled,
+.copy:active:enabled {
+  color: var(--accent);
+}
+
+.copy:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.copy .when-copied,
+.copy.copied .when-idle {
+  display: none;
+}
+
+.copy.copied .when-copied {
+  display: block;
+  color: var(--accent);
+}
+
+.hint {
+  min-height: 1.25rem;
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+  overflow-wrap: anywhere;
+}
+
+.hint.error {
+  color: var(--error);
+}
+
+.precision-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+output {
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+input[type='range'] {
+  display: block;
+  width: 100%;
+  height: var(--target);
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-top: 0.5rem;
+}
+
+.actions button,
+.actions a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: var(--target);
+  font-weight: 600;
+}
+
+.actions button {
+  padding: 0 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  transition: border-color 120ms, color 120ms;
+}
+
+.actions button:hover:enabled,
+.actions button:active:enabled {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.actions button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.actions a {
+  text-decoration: none;
+}
+
+.actions [hidden] {
+  display: none;
+}
+
+footer {
+  margin-top: 2rem;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+footer p {
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}

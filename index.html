@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src https://nominatim.openstreetmap.org; img-src data:; base-uri 'none'; form-action 'none'">
+  <title>Geohash</title>
+  <meta name="description" content="Convert between addresses, latitude/longitude and geohashes.">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fafaf9">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1c1917">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23c2410c'/%3E%3Cpath d='M5.5 1v14M10.5 1v14M1 5.5h14M1 10.5h14' stroke='%23fff'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <svg hidden>
+    <symbol id="icon-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></symbol>
+    <symbol id="icon-locate" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></symbol>
+    <symbol id="icon-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+  </svg>
+
+  <main>
+    <h1>Geohash</h1>
+
+    <div class="field">
+      <label for="address">Address</label>
+      <div class="control">
+        <textarea id="address" rows="2" placeholder="Eiffel Tower, Paris" enterkeyhint="search" autocomplete="off" aria-describedby="address-hint"></textarea>
+        <button type="button" class="copy" data-copy="address" aria-label="Copy address" disabled>
+          <svg class="when-idle" aria-hidden="true"><use href="#icon-copy"/></svg>
+          <svg class="when-copied" aria-hidden="true"><use href="#icon-check"/></svg>
+        </button>
+      </div>
+      <p class="hint" id="address-hint" role="status"></p>
+    </div>
+
+    <div class="field">
+      <label for="coords">Latitude, longitude</label>
+      <div class="control">
+        <input id="coords" class="mono" type="text" placeholder="48.85837, 2.29448" enterkeyhint="done" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" aria-describedby="coords-hint">
+        <button type="button" class="copy" data-copy="coords" aria-label="Copy coordinates" disabled>
+          <svg class="when-idle" aria-hidden="true"><use href="#icon-copy"/></svg>
+          <svg class="when-copied" aria-hidden="true"><use href="#icon-check"/></svg>
+        </button>
+      </div>
+      <p class="hint" id="coords-hint" role="status"></p>
+    </div>
+
+    <div class="field">
+      <label for="hash">Geohash</label>
+      <div class="control">
+        <input id="hash" class="mono" type="text" maxlength="12" placeholder="u09tunqu" enterkeyhint="done" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" aria-describedby="hash-hint">
+        <button type="button" class="copy" data-copy="hash" aria-label="Copy geohash" disabled>
+          <svg class="when-idle" aria-hidden="true"><use href="#icon-copy"/></svg>
+          <svg class="when-copied" aria-hidden="true"><use href="#icon-check"/></svg>
+        </button>
+      </div>
+      <p class="hint" id="hash-hint" role="status"></p>
+    </div>
+
+    <div class="field">
+      <div class="precision-label">
+        <label for="precision">Precision</label>
+        <output id="precision-value" for="precision"></output>
+      </div>
+      <input id="precision" type="range" min="1" max="12" step="1" value="8">
+    </div>
+
+    <div class="actions">
+      <button type="button" id="locate">
+        <svg aria-hidden="true"><use href="#icon-locate"/></svg>
+        <span id="locate-label">Use my location</span>
+      </button>
+      <a id="map-link" target="_blank" rel="noopener" hidden>
+        Open in OSM
+        <svg aria-hidden="true"><use href="#icon-external"/></svg>
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    <p>Coordinates and geohashes never leave your device. Address lookups are sent to <a href="https://nominatim.org">Nominatim</a>. Address data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>.</p>
+  </footer>
+</body>
+</html>
