@@ -224,7 +224,8 @@ input[type='range'] {
   font-weight: 600;
 }
 
-.actions button {
+.actions button,
+.actions .button {
   padding: 0 1rem;
   border: 1px solid var(--border);
   border-radius: 0.5rem;
@@ -232,7 +233,9 @@ input[type='range'] {
 }
 
 .actions button:hover:enabled,
-.actions button:active:enabled {
+.actions button:active:enabled,
+.actions .button:hover,
+.actions .button:active {
   border-color: var(--accent);
   color: var(--accent);
 }
@@ -244,6 +247,12 @@ input[type='range'] {
 
 .actions a {
   text-decoration: none;
+}
+
+.actions .button {
+  flex-basis: 100%;
+  justify-content: center;
+  color: inherit;
 }
 
 .actions [hidden] {

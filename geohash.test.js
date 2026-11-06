@@ -1,12 +1,14 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import {
+  bitchatUrl,
   cellSize,
   decode,
   encode,
   formatDistance,
   formatLatLng,
   isGeohash,
+  isIos,
   parseLatLng,
   reverseZoom,
 } from './geohash.js';
@@ -141,4 +143,35 @@ test('reverseZoom asks for less detail on larger cells', () => {
   assert.equal(reverseZoom(5), 12);
   assert.equal(reverseZoom(7), 18);
   assert.equal(reverseZoom(12), 18);
+});
+
+test('bitchatUrl links to the location channel', () => {
+  assert.equal(bitchatUrl('u09tunqu'), 'bitchat://geohash/u09tunqu');
+  assert.equal(bitchatUrl('u0'), 'bitchat://geohash/u0');
+  assert.equal(bitchatUrl('u09tunquvwxy'), 'bitchat://geohash/u09tunquvwxy');
+});
+
+test('bitchatUrl lowercases the geohash', () => {
+  assert.equal(bitchatUrl('U09TUNQU'), 'bitchat://geohash/u09tunqu');
+});
+
+test('bitchatUrl has no link for geohashes bitchat rejects', () => {
+  assert.equal(bitchatUrl(''), null);
+  assert.equal(bitchatUrl('u'), null);
+  assert.equal(bitchatUrl('u09tunquvwxyz'), null);
+  assert.equal(bitchatUrl('hello'), null);
+  assert.equal(bitchatUrl('u09/../x'), null);
+});
+
+test('isIos recognises iPhones and iPads only', () => {
+  const iphone = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1';
+  const oldIpad = 'Mozilla/5.0 (iPad; CPU OS 12_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Mobile/15E148 Safari/604.1';
+  const mac = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15';
+  const android = 'Mozilla/5.0 (Linux; Android 15; Pixel 9) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Mobile Safari/537.36';
+
+  assert.equal(isIos(iphone, 5), true);
+  assert.equal(isIos(oldIpad, 5), true);
+  assert.equal(isIos(mac, 5), true); // iPadOS Safari reports a Mac user agent.
+  assert.equal(isIos(mac, 0), false);
+  assert.equal(isIos(android, 5), false);
 });

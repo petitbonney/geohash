@@ -64,6 +64,18 @@ export function isGeohash(text) {
   return /^[0-9b-hjkmnp-z]{1,12}$/i.test(text);
 }
 
+// bitchat ignores links to channels shorter than two characters.
+export function bitchatUrl(hash) {
+  if (hash.length < 2 || !isGeohash(hash)) return null;
+  return `bitchat://geohash/${hash.toLowerCase()}`;
+}
+
+// iPadOS Safari reports a Mac user agent, but Macs have no touch screen.
+export function isIos(userAgent, maxTouchPoints) {
+  return /iPhone|iPad|iPod/.test(userAgent)
+    || (/Macintosh/.test(userAgent) && maxTouchPoints > 1);
+}
+
 export function parseLatLng(text) {
   const number = String.raw`[+-]?(?:\d+\.?\d*|\.\d+)`;
   const match = text.match(new RegExp(`^\\s*(${number})\\s*[,;\\s]\\s*(${number})\\s*$`));
