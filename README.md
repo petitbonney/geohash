@@ -10,7 +10,7 @@ It is a static site with no build step and no dependencies. Coordinates and geoh
 - **Address** lookups run when you press Enter or leave a field, to respect Nominatim's [usage policy](https://operations.osmfoundation.org/policies/nominatim/).
 - **Precision** sets the geohash length, from 1 to 12 characters.
 - The page URL carries the geohash, so links can be shared: `.../geohash/#u09tunqu`.
-- **Open in bitchat** appears on iPhone and iPad, and opens the geohash's location channel in [bitchat](https://github.com/permissionlesstech/bitchat). It needs at least 2 characters. The Android app doesn't open geohash links yet.
+- **Open in bitchat** appears on iOS and Android, and opens the geohash's location channel in [bitchat](https://github.com/permissionlesstech/bitchat). It needs at least 2 characters. The Android app has no geohash link yet, so the button uses an `intent:` URL and the verification sheet opens over the channel until you close it.
 
 ## Develop
 

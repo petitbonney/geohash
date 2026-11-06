@@ -65,9 +65,25 @@ export function isGeohash(text) {
 }
 
 // bitchat ignores links to channels shorter than two characters.
+function isChannel(hash) {
+  return hash.length >= 2 && isGeohash(hash);
+}
+
 export function bitchatUrl(hash) {
-  if (hash.length < 2 || !isGeohash(hash)) return null;
-  return `bitchat://geohash/${hash.toLowerCase()}`;
+  return isChannel(hash) ? `bitchat://geohash/${hash.toLowerCase()}` : null;
+}
+
+// The Android app has no geohash link. It does open a channel from the extras
+// its notifications send, and bitchat://verify is the only link that reaches
+// it from a browser, so the verification sheet opens over the channel.
+export function bitchatAndroidUrl(hash) {
+  if (!isChannel(hash)) return null;
+  const extras = `B.open_geohash_chat=true;S.geohash=${hash.toLowerCase()}`;
+  return `intent://verify#Intent;scheme=bitchat;package=com.bitchat.droid;${extras};end`;
+}
+
+export function isAndroid(userAgent) {
+  return /Android/.test(userAgent);
 }
 
 // iPadOS Safari reports a Mac user agent, but Macs have no touch screen.

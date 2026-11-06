@@ -1,12 +1,14 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import {
+  bitchatAndroidUrl,
   bitchatUrl,
   cellSize,
   decode,
   encode,
   formatDistance,
   formatLatLng,
+  isAndroid,
   isGeohash,
   isIos,
   parseLatLng,
@@ -174,4 +176,34 @@ test('isIos recognises iPhones and iPads only', () => {
   assert.equal(isIos(mac, 5), true); // iPadOS Safari reports a Mac user agent.
   assert.equal(isIos(mac, 0), false);
   assert.equal(isIos(android, 5), false);
+});
+
+test('bitchatAndroidUrl carries the geohash to the Android app', () => {
+  assert.equal(
+    bitchatAndroidUrl('u09tunqu'),
+    'intent://verify#Intent;scheme=bitchat;package=com.bitchat.droid;B.open_geohash_chat=true;S.geohash=u09tunqu;end',
+  );
+});
+
+test('bitchatAndroidUrl lowercases the geohash', () => {
+  assert.equal(
+    bitchatAndroidUrl('U09TU'),
+    'intent://verify#Intent;scheme=bitchat;package=com.bitchat.droid;B.open_geohash_chat=true;S.geohash=u09tu;end',
+  );
+});
+
+test('bitchatAndroidUrl has no link for text that is not a channel', () => {
+  assert.equal(bitchatAndroidUrl(''), null);
+  assert.equal(bitchatAndroidUrl('u'), null);
+  assert.equal(bitchatAndroidUrl('u09;S.x=y'), null);
+});
+
+test('isAndroid recognises Android only', () => {
+  const pixel = 'Mozilla/5.0 (Linux; Android 15; Pixel 9) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Mobile Safari/537.36';
+  const iphone = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1';
+  const windows = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36';
+
+  assert.equal(isAndroid(pixel), true);
+  assert.equal(isAndroid(iphone), false);
+  assert.equal(isAndroid(windows), false);
 });

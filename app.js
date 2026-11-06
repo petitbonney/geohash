@@ -1,10 +1,12 @@
 import {
+  bitchatAndroidUrl,
   bitchatUrl,
   cellSize,
   decode,
   encode,
   formatDistance,
   formatLatLng,
+  isAndroid,
   isGeohash,
   isIos,
   parseLatLng,
@@ -29,8 +31,12 @@ const locateLabel = document.getElementById('locate-label');
 const mapLink = document.getElementById('map-link');
 const bitchatLink = document.getElementById('bitchat-link');
 
-// Only the iOS app opens geohash links. On Android the link would do nothing.
-const canOpenBitchat = isIos(navigator.userAgent, navigator.maxTouchPoints);
+// bitchat is a phone app here: desktop browsers get no link.
+function channelUrl(hash) {
+  if (isIos(navigator.userAgent, navigator.maxTouchPoints)) return bitchatUrl(hash);
+  if (isAndroid(navigator.userAgent)) return bitchatAndroidUrl(hash);
+  return null;
+}
 
 let point = null;
 let lookup = null;
@@ -64,7 +70,7 @@ function render() {
   }
 
   const hash = point ? field.hash.value.toLowerCase() : '';
-  const channel = canOpenBitchat ? bitchatUrl(hash) : null;
+  const channel = channelUrl(hash);
   bitchatLink.hidden = !channel;
   if (channel) bitchatLink.href = channel;
 
